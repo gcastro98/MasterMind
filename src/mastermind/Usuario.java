@@ -175,11 +175,3 @@ public class Usuario
 				'}';
 	}
 }
-
-public class WinsSorter implements Comparator<Usuario>
-{
-	@Override
-	public int compare(Usuario usuario1, Usuario usuario2) {
-		return Integer(usuario1.getPartidas_ganadas()).compareTo(usuario1.getPartidas_ganadas());
-	}
-}
