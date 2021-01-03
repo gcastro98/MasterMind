@@ -30,4 +30,47 @@ public class Combinacion {
         }
         this.codigo = color;
     }
+    public Combinacion(Color[] codigo){
+        this.codigo = codigo;
+    }
+
+    public Color[] getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Color[] codigo) {
+        this.codigo = codigo;
+    }
+    
+    public boolean esGanadora(Combinacion combinacion){
+        return codigo.equals(combinacion);
+    }
+    
+    public boolean contains(Color color){
+        for(int i=0;i<4;i++){
+            if(this.codigo[i]==color) return true;
+        }
+        return false;
+    }
+    public boolean posicionado(Color color, int i){
+        return (this.codigo[i]==color);
+    }
+
+    @Override
+    public String toString() {
+        return "Combinacion{" + "codigo=" + codigo + '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null) return false;
+        if (obj==this) return true;
+        if (obj.getClass() != this.getClass()) return false;
+        Combinacion combinacion = (Combinacion) obj;
+        return combinacion.getCodigo()[0]==this.codigo[0];
+    }
+    
+    
+    
+    
 }

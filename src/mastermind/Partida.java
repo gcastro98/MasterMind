@@ -5,10 +5,14 @@
  */
 package mastermind;
 
+import java.util.List;
+
 /**
  *
  * @author sigui
  */
 public class Partida {
-    
+    private List<Ronda> rondas;
+    private Usuario usuario1;
+    private Usuario usuario2;
 }
