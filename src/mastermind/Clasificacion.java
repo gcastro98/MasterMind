@@ -1,14 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mastermind;
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author sigui
- */
 public class Clasificacion {
-    
+	public static boolean volcar_a_txt(File fichero)
+	{
+                FileWriter          writer;
+                int                 i;
+                ArrayList<Usuario>  lista_ordenada;
+                WinsSorter          ws;
+            try {
+                
+                writer = new FileWriter(fichero);
+                if (fichero.createNewFile())
+                {
+                    System.out.println("File created: " + fichero.getName());
+                }
+                else
+                {
+                    System.out.println("File already exists.");
+                }
+                i = 0;
+                ws = new WinsSorter();
+                lista_ordenada = (ArrayList<Usuario>)Usuario.getLista_usuarios().clone();
+                lista_ordenada.sort(ws);
+                while (i < Usuario.getLista_usuarios().size())
+                {
+                    writer.write(lista_ordenada.get(i).toString());
+                    writer.write("\n");
+                }
+                return (true);
+            } catch (IOException ex) {
+                Logger.getLogger(Clasificacion.class.getName()).log(Level.SEVERE, null, ex);
+                return (false);
+            }
+	
+        }
 }
