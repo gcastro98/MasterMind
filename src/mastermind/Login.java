@@ -6,6 +6,7 @@ public class Login
 {
 	public static Usuario sign_in(String usuario, String clave)
 	{
+		return (null);/*
 		int i;
 		ArrayList<Usuario> lista_usuarios;
 		
@@ -17,6 +18,6 @@ public class Login
 				return (lista_usuarios.get(i));
 				i++;
 		}
-		return (null);
+		return (null);*/
 	}
 }
