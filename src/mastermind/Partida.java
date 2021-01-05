@@ -24,7 +24,12 @@ public class Partida {
 		Partida.lista_partidas.add(new Partida(local, visitante));
 		return (Partida.lista_partidas.get(Partida.lista_partidas.size() - 1));
 	}
-
+	
+	public void nueva_ronda(Combinacion clave1, Combinacion clave2)
+	{
+		this.rondas.add(new Ronda(this.local, this.visitante, clave1, clave2));
+	}
+	
 	public Usuario getLocal() {
 		return local;
 	}
