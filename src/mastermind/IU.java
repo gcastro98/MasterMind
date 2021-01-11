@@ -5,11 +5,20 @@
  */
 package mastermind;
 
+
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,14 +32,24 @@ public class IU extends javax.swing.JFrame {
 	private Usuario usuario_actual;
         private Combinacion clave;
         private Partida partida;
+        private boolean comprobar;
+        
         
 	public IU() {
-		initComponents();
-		panel_Visible(jPanel_menu);
-		this.jPanel_sombra.setBackground(new Color(0,0,0,75));
+            initComponents();
+            inicio();
+            
+                //this.jPanel_list.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+            this.jPanel_sombra.setBackground(new Color(0,0,0,75));
 	}
         
-        
+        public void inicio(){
+            panel_Visible(jPanel_Partida);
+            panel_intento_color_1.setBackground(pintar_paneles(((String) combo_intento_color_1.getSelectedItem())));
+            panel_intento_color_2.setBackground(pintar_paneles(((String) combo_intento_color_2.getSelectedItem())));
+            panel_intento_color_3.setBackground(pintar_paneles(((String) combo_intento_color_3.getSelectedItem())));
+            panel_intento_color_4.setBackground(pintar_paneles(((String) combo_intento_color_4.getSelectedItem())));
+        }
         public void panel_Visible(javax.swing.JPanel jpanel){
             this.jPanel_menu.setVisible(false);
             this.jPanel_iniciar_sesion.setVisible(false);
@@ -47,21 +66,37 @@ public class IU extends javax.swing.JFrame {
             while (usuario == null)
             {
                 usuario = Login.sign_in(this.jTextField_nombre_usuario.getText(), this.jTextField_contrasena.getText());
-		this.jLabel_error_iniciar_sesion.setText("Usuario o contraseña incorrectos");
+                if(usuario == null) this.jLabel_error_iniciar_sesion.setText("Usuario o contraseña incorrectos");
             }
             return usuario;
         }
         
         public void entrenamiento(){
-            panel_Visible(jPanel_Partida);
+            //iniciar_partida();
+            System.out.println("Entro");
+            panel_Visible(this.jPanel_Partida);
+            System.out.println(jPanel_Partida.getVisibleRect());
+            this.jPanel_menu.setVisible(false);
+            this.jPanel_Partida.setVisible(true);
+            System.out.println("Panel Visible");
             clave = new Combinacion();
+            /*System.out.println("Combinacion Creada");
             boolean correcto = false;
+            int intentos = 0;
             while (!correcto){
-                
-            }
+                if(comprobar){
+                    System.out.println("Entra en el bucle");
+                    intentos++;
+                    comprobar = false;
+                    correcto = intento(clave);
+                }
+            }*/
+            
         }
        
-        
+        public void iniciar_partida(){
+           
+        }
         public void crearPartida(){
             Usuario contrincante = sign_in();
             this.partida = new Partida(this.usuario_actual, contrincante);
@@ -78,32 +113,66 @@ public class IU extends javax.swing.JFrame {
         public Combinacion leerClave(){
             throw new RuntimeException("No implementado");
         }
-        public void intento(Combinacion combinacion){
+        public boolean intento(){
             Colour[] intento = new Colour[4];
-            intento[0]= (Colour) combo_intento_color_1.getSelectedItem();
-            intento[1]= (Colour) combo_intento_color_2.getSelectedItem();
-            intento[2]= (Colour) combo_intento_color_3.getSelectedItem();
-            intento[3]= (Colour) combo_intento_color_4.getSelectedItem();
+            intento[0]= Colour.valueOf((String) combo_intento_color_1.getSelectedItem());
+            intento[1]= Colour.valueOf((String) combo_intento_color_2.getSelectedItem());
+            intento[2]= Colour.valueOf((String) combo_intento_color_3.getSelectedItem());
+            intento[3]= Colour.valueOf((String) combo_intento_color_4.getSelectedItem());
             Combinacion combi = new Combinacion(intento);
-            if (combinacion.equals(combi)) System.out.println("Has ganado");
+            if (clave.equals(combi)) return true;
             else{
-                int posicionado = 0;
+                int posicionados = 0;
                 int contenidos = 0;
                 for (int i=0;i<4;i++){
-                    if (combinacion.contains(intento[i])){
+                    if (clave.contains(intento[i])){
                         contenidos++;
-                        if(combinacion.posicionado(intento[i], i)) 
-                        posicionado++;
+                        if(clave.posicionado(intento[i], i)) 
+                        posicionados++;
                     }
                 }
-                lista_intentos.add(resultados(posicionado, contenidos));
+               
+                resultados(posicionados, contenidos);
+                /*javax.swing.GroupLayout jPanel_listLayou = jPanel_list.getLayout();
+        jPanel_list.setLayout(jPanel_listLayou);
+        jPanel_listLayou.setHorizontalGroup(
+            jPanel_listLayou.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel_dentro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_listLayou.setVerticalGroup(
+            jPanel_listLayou.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_listLayou.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(panel_dentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+                componente.setVisible(true);
+                //jPanel_Partida.add(componente, 0);*/
+                
+                System.out.println(jPanel_list.getComponentCount());
+                System.out.println(contenidos+","+posicionados);
+                jPanel_list.revalidate();
+                jPanel_list.repaint();
+                
             }
+            return false;
         }
         public Color pintar_paneles(String valor){
-            //switch 
-            throw new RuntimeException("no implementado");
+            switch (valor) {
+                case "Blanco" : return Color.WHITE;
+                case "Azul" : return Color.BLUE;
+                case "Marron" : return new Color(141, 73, 37,100);
+                case "Negro" : return Color.BLACK;
+                case "Rojo" : return Color.RED;
+                case "Verde" : return Color.GREEN;
+                default : return Color.WHITE;
+            } 
         }
-        public Component resultados(int posicionado, int contenidos){
+        public void visible(javax.swing.JPanel panel){
+            Component[] lista = panel.getComponents();
+            for(int i=0;i<lista.length;i++) lista[i].setVisible(true);
+        }
+        public void resultados(int posicionado, int contenidos){
         
         javax.swing.JPanel panel_resultado = new javax.swing.JPanel();
         javax.swing.JPanel resultado_color_1 = new javax.swing.JPanel();
@@ -117,10 +186,10 @@ public class IU extends javax.swing.JFrame {
   
         
         panel_resultado.setBackground(new java.awt.Color(125, 125, 0));
-        resultado_color_1.setBackground(new java.awt.Color(0, 0, 0));
-        resultado_color_2.setBackground(new java.awt.Color(0, 0, 0));
-        resultado_color_4.setBackground(new java.awt.Color(0, 0, 0));
-        resultado_color_3.setBackground(new java.awt.Color(0, 0, 0));
+        resultado_color_1.setBackground(pintar_paneles(((String) combo_intento_color_1.getSelectedItem())));
+        resultado_color_2.setBackground(pintar_paneles(((String) combo_intento_color_2.getSelectedItem())));
+        resultado_color_3.setBackground(pintar_paneles(((String) combo_intento_color_3.getSelectedItem())));
+        resultado_color_4.setBackground(pintar_paneles(((String) combo_intento_color_4.getSelectedItem())));
 
         javax.swing.GroupLayout resultado_color_2Layout = new javax.swing.GroupLayout(resultado_color_2);
         resultado_color_2.setLayout(resultado_color_2Layout);
@@ -133,8 +202,6 @@ public class IU extends javax.swing.JFrame {
             .addGap(0, 36, Short.MAX_VALUE)
         );
 
-        
-
         javax.swing.GroupLayout resultado_color_3Layout = new javax.swing.GroupLayout(resultado_color_3);
         resultado_color_3.setLayout(resultado_color_3Layout);
         resultado_color_3Layout.setHorizontalGroup(
@@ -145,8 +212,6 @@ public class IU extends javax.swing.JFrame {
             resultado_color_3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 36, Short.MAX_VALUE)
         );
-
-        
 
         javax.swing.GroupLayout resultado_color_4Layout = new javax.swing.GroupLayout(resultado_color_4);
         resultado_color_4.setLayout(resultado_color_4Layout);
@@ -166,8 +231,6 @@ public class IU extends javax.swing.JFrame {
         numero_resultados_contenido.setText(Integer.toString(contenidos));
 
         numero_resultado_posicionado.setText(Integer.toString(posicionado));
-
-        
 
         javax.swing.GroupLayout resultado_color_1Layout = new javax.swing.GroupLayout(resultado_color_1);
         resultado_color_1.setLayout(resultado_color_1Layout);
@@ -225,7 +288,40 @@ public class IU extends javax.swing.JFrame {
                     .addComponent(resultado_color_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-            return panel_resultado;
+        
+        /*System.out.println(panel_resultado.getComponentCount());
+        javax.swing.JPanel componente = (javax.swing.JPanel) jPanel_list.add(panel_resultado);
+        componente.revalidate();
+        componente.repaint();
+        componente.setVisible(true);
+        componente.setOpaque(true);
+        System.out.println(componente.isVisible());
+        jPanel_list.revalidate();
+        jPanel_list.repaint();
+        visible();
+        
+        panel_dentro.add(new JButton("Hola"));
+        panel_dentro.repaint();
+        panel_dentro.revalidate();
+        panel_dentro.setVisible(true);
+        jPanel_Partida.repaint();
+        jPanel_Partida.revalidate();
+        this.repaint();
+        this.revalidate();
+        this.pack();*/
+        
+        Component componente = this.jPanel_list.add(panel_resultado, 0);
+        visible((JPanel) componente);
+        visible(jPanel_list);
+        visible(jPanel_Partida);
+        this.jPanel_list.revalidate();
+        this.jPanel_list.repaint();
+        componente.setVisible(true);
+        this.repaint();
+        this.revalidate();
+      
+        
+            //return panel_resultado;
         }
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -237,11 +333,7 @@ public class IU extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel_menu = new javax.swing.JPanel();
-        jPanel_sombra = new javax.swing.JPanel();
         jPanel_Partida = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lista_intentos = new javax.swing.JList<>();
         panel_intento = new javax.swing.JPanel();
         combo_intento_color_1 = new javax.swing.JComboBox<>();
         combo_intento_color_2 = new javax.swing.JComboBox<>();
@@ -251,19 +343,19 @@ public class IU extends javax.swing.JFrame {
         panel_intento_color_2 = new javax.swing.JPanel();
         panel_intento_color_3 = new javax.swing.JPanel();
         panel_intento_color_4 = new javax.swing.JPanel();
-        panel_resultado = new javax.swing.JPanel();
-        resultado_color_2 = new javax.swing.JPanel();
-        resultado_color_3 = new javax.swing.JPanel();
-        resultado_color_4 = new javax.swing.JPanel();
-        label_resultados_contenido = new javax.swing.JLabel();
-        label_resultado_posicionado = new javax.swing.JLabel();
-        numero_resultados_contenido = new javax.swing.JLabel();
-        numero_resultado_posicionado = new javax.swing.JLabel();
-        resultado_color_1 = new javax.swing.JPanel();
         boton_intento_comprobar = new javax.swing.JButton();
+        panel_fuera = new javax.swing.JPanel();
+        panel_dentro = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        grid = new GridLayout(0,1);
+        jPanel_list = new javax.swing.JPanel(this.grid);
+        jPanel_menu = new javax.swing.JPanel();
+        jPanel_sombra = new javax.swing.JPanel();
         jPanel_menu_inicio = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel_menu_lateral = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
         jPanel_iniciar_sesion = new javax.swing.JPanel();
         jPanel_campos = new javax.swing.JPanel();
         jLabel_nombre_usuario = new javax.swing.JLabel();
@@ -286,31 +378,30 @@ public class IU extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel_menu.setPreferredSize(new java.awt.Dimension(1280, 720));
-
-        jPanel_sombra.setPreferredSize(new java.awt.Dimension(1280, 720));
-
-        lista_intentos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(lista_intentos);
-
         panel_intento.setBackground(new java.awt.Color(125, 125, 125));
 
-        combo_intento_color_1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo_intento_color_1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blanco", "Negro", "Azul", "Rojo", "Verde", "Marron" }));
         combo_intento_color_1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_intento_color_1ActionPerformed(evt);
             }
         });
 
-        combo_intento_color_2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo_intento_color_2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blanco", "Negro", "Azul", "Rojo", "Verde", "Marron" }));
+        combo_intento_color_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_intento_color_2ActionPerformed(evt);
+            }
+        });
 
-        combo_intento_color_3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo_intento_color_3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blanco", "Negro", "Azul", "Rojo", "Verde", "Marron" }));
+        combo_intento_color_3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_intento_color_3ActionPerformed(evt);
+            }
+        });
 
-        combo_intento_color_4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo_intento_color_4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blanco", "Negro", "Azul", "Rojo", "Verde", "Marron" }));
         combo_intento_color_4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_intento_color_4ActionPerformed(evt);
@@ -390,7 +481,7 @@ public class IU extends javax.swing.JFrame {
                 .addGroup(panel_intentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panel_intento_color_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(combo_intento_color_4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         panel_intentoLayout.setVerticalGroup(
             panel_intentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,114 +512,6 @@ public class IU extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        panel_resultado.setBackground(new java.awt.Color(125, 125, 0));
-
-        resultado_color_2.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout resultado_color_2Layout = new javax.swing.GroupLayout(resultado_color_2);
-        resultado_color_2.setLayout(resultado_color_2Layout);
-        resultado_color_2Layout.setHorizontalGroup(
-            resultado_color_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 81, Short.MAX_VALUE)
-        );
-        resultado_color_2Layout.setVerticalGroup(
-            resultado_color_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
-        );
-
-        resultado_color_3.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout resultado_color_3Layout = new javax.swing.GroupLayout(resultado_color_3);
-        resultado_color_3.setLayout(resultado_color_3Layout);
-        resultado_color_3Layout.setHorizontalGroup(
-            resultado_color_3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 81, Short.MAX_VALUE)
-        );
-        resultado_color_3Layout.setVerticalGroup(
-            resultado_color_3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
-        );
-
-        resultado_color_4.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout resultado_color_4Layout = new javax.swing.GroupLayout(resultado_color_4);
-        resultado_color_4.setLayout(resultado_color_4Layout);
-        resultado_color_4Layout.setHorizontalGroup(
-            resultado_color_4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 81, Short.MAX_VALUE)
-        );
-        resultado_color_4Layout.setVerticalGroup(
-            resultado_color_4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
-        );
-
-        label_resultados_contenido.setText("Contenidos :");
-
-        label_resultado_posicionado.setText("Posicionados: ");
-
-        numero_resultados_contenido.setText("jLabel2");
-
-        numero_resultado_posicionado.setText("jLabel2");
-
-        resultado_color_1.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout resultado_color_1Layout = new javax.swing.GroupLayout(resultado_color_1);
-        resultado_color_1.setLayout(resultado_color_1Layout);
-        resultado_color_1Layout.setHorizontalGroup(
-            resultado_color_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 81, Short.MAX_VALUE)
-        );
-        resultado_color_1Layout.setVerticalGroup(
-            resultado_color_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout panel_resultadoLayout = new javax.swing.GroupLayout(panel_resultado);
-        panel_resultado.setLayout(panel_resultadoLayout);
-        panel_resultadoLayout.setHorizontalGroup(
-            panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_resultadoLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(resultado_color_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultado_color_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultado_color_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultado_color_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_resultadoLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(label_resultados_contenido)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(numero_resultados_contenido))
-                    .addGroup(panel_resultadoLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(label_resultado_posicionado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(numero_resultado_posicionado)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panel_resultadoLayout.setVerticalGroup(
-            panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_resultadoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_resultadoLayout.createSequentialGroup()
-                        .addGroup(panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(label_resultados_contenido)
-                            .addComponent(numero_resultados_contenido))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addGroup(panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(label_resultado_posicionado)
-                            .addComponent(numero_resultado_posicionado)))
-                    .addComponent(resultado_color_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultado_color_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultado_color_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultado_color_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         boton_intento_comprobar.setText("Comprobar");
         boton_intento_comprobar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -536,48 +519,112 @@ public class IU extends javax.swing.JFrame {
             }
         });
 
+        panel_fuera.setBackground(new java.awt.Color(240, 240, 0));
+
+        javax.swing.GroupLayout panel_dentroLayout = new javax.swing.GroupLayout(panel_dentro);
+        panel_dentro.setLayout(panel_dentroLayout);
+        panel_dentroLayout.setHorizontalGroup(
+            panel_dentroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+        panel_dentroLayout.setVerticalGroup(
+            panel_dentroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panel_fueraLayout = new javax.swing.GroupLayout(panel_fuera);
+        panel_fuera.setLayout(panel_fueraLayout);
+        panel_fueraLayout.setHorizontalGroup(
+            panel_fueraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel_dentro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panel_fueraLayout.setVerticalGroup(
+            panel_fueraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_fueraLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(panel_dentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jPanel_list.setBackground(new java.awt.Color(240, 0, 240));
+        jPanel_list.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout jPanel_listLayout = new javax.swing.GroupLayout(jPanel_list);
+        jPanel_list.setLayout(jPanel_listLayout);
+        jPanel_listLayout.setHorizontalGroup(
+            jPanel_listLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel_listLayout.setVerticalGroup(
+            jPanel_listLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 436, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(jPanel_list);
+
         javax.swing.GroupLayout jPanel_PartidaLayout = new javax.swing.GroupLayout(jPanel_Partida);
         jPanel_Partida.setLayout(jPanel_PartidaLayout);
         jPanel_PartidaLayout.setHorizontalGroup(
             jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_PartidaLayout.createSequentialGroup()
-                .addContainerGap(424, Short.MAX_VALUE)
+                .addGroup(jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_PartidaLayout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel_PartidaLayout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addComponent(panel_fuera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addGroup(jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panel_intento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel_PartidaLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(panel_resultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(35, 35, 35)
+                    .addComponent(jScrollPane1))
+                .addGap(37, 37, 37)
                 .addComponent(boton_intento_comprobar)
-                .addGap(196, 196, 196))
+                .addGap(194, 194, 194))
         );
         jPanel_PartidaLayout.setVerticalGroup(
             jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_PartidaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_PartidaLayout.createSequentialGroup()
+                        .addGap(193, 193, 193)
+                        .addComponent(jButton2)
+                        .addGap(67, 67, 67)
+                        .addComponent(panel_fuera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel_PartidaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel_PartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panel_intento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boton_intento_comprobar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addComponent(panel_resultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_PartidaLayout.createSequentialGroup()
+                        .addComponent(boton_intento_comprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)))
+                .addGap(139, 139, 139))
         );
+
+        jPanel_menu.setPreferredSize(new java.awt.Dimension(1280, 720));
+
+        jPanel_sombra.setPreferredSize(new java.awt.Dimension(1280, 720));
 
         javax.swing.GroupLayout jPanel_sombraLayout = new javax.swing.GroupLayout(jPanel_sombra);
         jPanel_sombra.setLayout(jPanel_sombraLayout);
         jPanel_sombraLayout.setHorizontalGroup(
             jPanel_sombraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel_Partida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         jPanel_sombraLayout.setVerticalGroup(
             jPanel_sombraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel_Partida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
-
-        jPanel_Partida.getAccessibleContext().setAccessibleName("");
 
         jPanel_menu_inicio.setPreferredSize(new java.awt.Dimension(1280, 720));
 
@@ -610,15 +657,28 @@ public class IU extends javax.swing.JFrame {
 
         jPanel_menu_lateral.setPreferredSize(new java.awt.Dimension(500, 720));
 
+        jButton3.setText("Entrenamiento");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_menu_lateralLayout = new javax.swing.GroupLayout(jPanel_menu_lateral);
         jPanel_menu_lateral.setLayout(jPanel_menu_lateralLayout);
         jPanel_menu_lateralLayout.setHorizontalGroup(
             jPanel_menu_lateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
+            .addGroup(jPanel_menu_lateralLayout.createSequentialGroup()
+                .addGap(72, 72, 72)
+                .addComponent(jButton3)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         jPanel_menu_lateralLayout.setVerticalGroup(
             jPanel_menu_lateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGroup(jPanel_menu_lateralLayout.createSequentialGroup()
+                .addGap(249, 249, 249)
+                .addComponent(jButton3)
+                .addContainerGap(448, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel_menuLayout = new javax.swing.GroupLayout(jPanel_menu);
@@ -731,13 +791,25 @@ public class IU extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel_iniciar_sesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel_Partida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel_menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel_iniciar_sesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel_Partida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
+
+        jPanel_Partida.getAccessibleContext().setAccessibleName("jPanel_Partida");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -765,16 +837,35 @@ public class IU extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void combo_intento_color_4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_intento_color_4ActionPerformed
-        // TODO add your handling code here:
+        panel_intento_color_4.setBackground(pintar_paneles(((String) combo_intento_color_4.getSelectedItem())));
     }//GEN-LAST:event_combo_intento_color_4ActionPerformed
 
     private void boton_intento_comprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_intento_comprobarActionPerformed
-        // TODO add your handling code here:
+        intento();
+        this.panel_dentro.add(new JButton("Hola"));
+        panel_dentro.repaint();
+        panel_dentro.revalidate();
     }//GEN-LAST:event_boton_intento_comprobarActionPerformed
 
     private void combo_intento_color_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_intento_color_1ActionPerformed
-        // TODO add your handling code here:
+        panel_intento_color_1.setBackground(pintar_paneles(((String) combo_intento_color_1.getSelectedItem())));        
     }//GEN-LAST:event_combo_intento_color_1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+      entrenamiento();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void combo_intento_color_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_intento_color_2ActionPerformed
+        panel_intento_color_2.setBackground(pintar_paneles(((String) combo_intento_color_2.getSelectedItem())));    
+    }//GEN-LAST:event_combo_intento_color_2ActionPerformed
+
+    private void combo_intento_color_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_intento_color_3ActionPerformed
+        panel_intento_color_3.setBackground(pintar_paneles(((String) combo_intento_color_3.getSelectedItem())));
+    }//GEN-LAST:event_combo_intento_color_3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        entrenamiento();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -818,6 +909,8 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> combo_intento_color_3;
     private javax.swing.JComboBox<String> combo_intento_color_4;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton_iniciar_sesion;
     private javax.swing.JLabel jLabel_contrasena;
     private javax.swing.JLabel jLabel_error_iniciar_sesion;
@@ -826,6 +919,7 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_Partida;
     private javax.swing.JPanel jPanel_campos;
     private javax.swing.JPanel jPanel_iniciar_sesion;
+    private javax.swing.JPanel jPanel_list;
     private javax.swing.JPanel jPanel_menu;
     private javax.swing.JPanel jPanel_menu_inicio;
     private javax.swing.JPanel jPanel_menu_lateral;
@@ -833,20 +927,13 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField_contrasena;
     private javax.swing.JTextField jTextField_nombre_usuario;
-    private javax.swing.JLabel label_resultado_posicionado;
-    private javax.swing.JLabel label_resultados_contenido;
-    private javax.swing.JList<String> lista_intentos;
-    private javax.swing.JLabel numero_resultado_posicionado;
-    private javax.swing.JLabel numero_resultados_contenido;
+    private javax.swing.JPanel panel_dentro;
+    private javax.swing.JPanel panel_fuera;
     private javax.swing.JPanel panel_intento;
     private javax.swing.JPanel panel_intento_color_1;
     private javax.swing.JPanel panel_intento_color_2;
     private javax.swing.JPanel panel_intento_color_3;
     private javax.swing.JPanel panel_intento_color_4;
-    private javax.swing.JPanel panel_resultado;
-    private javax.swing.JPanel resultado_color_1;
-    private javax.swing.JPanel resultado_color_2;
-    private javax.swing.JPanel resultado_color_3;
-    private javax.swing.JPanel resultado_color_4;
     // End of variables declaration//GEN-END:variables
+    private GridLayout grid;
 }
