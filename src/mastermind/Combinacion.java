@@ -4,41 +4,29 @@
  * and open the template in the editor.
  */
 package mastermind;
-
 import java.util.Random;
-
 /**
  *
  * @author sigui
  */
 public class Combinacion {
-    private enum Color{ B , N , A , R , V , M;
-          
-    public static Color getRandomColor() {
-            Random random = new Random();
-            return values()[random.nextInt(values().length)];
-     }
-    }
- 
-    private Color[] codigo;
+    private Colour[] codigo;
     
     public Combinacion(){
         Random r = new Random();
-        Color[] color = new Color[4];
+        Colour[] color = new Colour[4];
         for (int i=0; i<3; i++){
-            color[i]=Color.getRandomColor();
+            color[i]=Colour.getRandomColor();
         }
         this.codigo = color;
     }
-    public Combinacion(Color[] codigo){
+    public Combinacion(Colour[] codigo){
         this.codigo = codigo;
     }
-
-    public Color[] getCodigo() {
+    public Colour[] getCodigo() {
         return codigo;
     }
-
-    public void setCodigo(Color[] codigo) {
+    public void setCodigo(Colour[] codigo) {
         this.codigo = codigo;
     }
     
@@ -46,30 +34,29 @@ public class Combinacion {
         return codigo.equals(combinacion);
     }
     
-    public boolean contains(Color color){
+    public boolean contains(Colour color){
         for(int i=0;i<4;i++){
             if(this.codigo[i]==color) return true;
         }
         return false;
     }
-    public boolean posicionado(Color color, int i){
+    public boolean posicionado(Colour color, int i){
         return (this.codigo[i]==color);
     }
-
     @Override
     public String toString() {
         return "Combinacion{" + "codigo=" + codigo + '}';
     }
-
     @Override
     public boolean equals(Object obj) {
         if (obj==null) return false;
         if (obj==this) return true;
         if (obj.getClass() != this.getClass()) return false;
         Combinacion combinacion = (Combinacion) obj;
-		return combinacion.getCodigo()[0]==this.codigo[0] &&
-				combinacion.getCodigo()[1]==this.codigo[1] &&
-				combinacion.getCodigo()[2]==this.codigo[2] &&
-				combinacion.getCodigo()[3]==this.codigo[3];
+        return combinacion.getCodigo()[0]==this.codigo[0] & combinacion.getCodigo()[1]==this.codigo[1] & combinacion.getCodigo()[2]==this.codigo[2] & combinacion.getCodigo()[3]==this.codigo[3];
     }
+    
+    
+    
+    
 }

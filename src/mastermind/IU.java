@@ -76,12 +76,11 @@ public class IU extends javax.swing.JFrame {
 			}
 		}
 		
-		public Usuario registro(){/*
+		public Usuario registro(){
 			Usuario user = Login.registro(this.jTextField_nombre_usuario.getText(), this.jTextField_contrasena.getText());
 			panel_Visible(jPanel_menu);
 			label_bienvenido.setText("Bienvenido, "+jTextField_nombre_usuario.getText());
-			return user;*/
-		return null;
+			return user;
 		}
 		
 		

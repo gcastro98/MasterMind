@@ -19,4 +19,11 @@ public class Login
 		}
 		return (null);
 	}
+	
+	public static Usuario registro(String usuario, String clave)
+    {
+                Usuario user = new Usuario(usuario, clave, false);
+        Usuario.addUsuario(user);
+        return user;
+    }
 }

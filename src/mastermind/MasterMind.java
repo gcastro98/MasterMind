@@ -17,14 +17,14 @@ public class MasterMind {
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException
 	{
-		if (args[0] != null)
+		/*if (args.length > 0)
 		{
 			cargar_datos(args[0]);
 		}
 		else
 		{
 			cargar_datos("datos.bin");
-		}
+		}*/
 		Usuario.setLista_usuarios(new ArrayList<Usuario>());
 		Usuario.addUsuario(new Usuario("admin", "admin", true));
 		IU iu = new IU();
