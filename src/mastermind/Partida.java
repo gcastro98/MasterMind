@@ -104,3 +104,4 @@ public class Partida {
 				", rondas=" + rondas.toString() + '}';
 	}
 }
+
