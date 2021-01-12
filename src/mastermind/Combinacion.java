@@ -67,10 +67,9 @@ public class Combinacion {
         if (obj==this) return true;
         if (obj.getClass() != this.getClass()) return false;
         Combinacion combinacion = (Combinacion) obj;
-        return combinacion.getCodigo()[0]==this.codigo[0];
+		return combinacion.getCodigo()[0]==this.codigo[0] &&
+				combinacion.getCodigo()[1]==this.codigo[1] &&
+				combinacion.getCodigo()[2]==this.codigo[2] &&
+				combinacion.getCodigo()[3]==this.codigo[3];
     }
-    
-    
-    
-    
 }

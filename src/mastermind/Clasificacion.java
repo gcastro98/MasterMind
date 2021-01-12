@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,5 +40,19 @@ public class Clasificacion {
                 return (false);
             }
 	
-        }
+    }
+	
+	public static List<Usuario> calificacion_por_victorias()
+	{
+		List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size() - 1);
+		lista_ordenada.sort(new WinsSorter());
+		return (lista_ordenada);
+	}
+	
+	public static List<Usuario> calificacion_por_porcentaje()
+	{
+		List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size() - 1);
+		lista_ordenada.sort(new PercentageSorter());
+		return (lista_ordenada);
+	}
 }

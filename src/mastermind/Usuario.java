@@ -29,6 +29,20 @@ public class Usuario
 		this.porcentaje_victorias = 0;
 	}
 
+	public Usuario(String usuario, String clave, boolean administrador, int partidas_jugadas, int partidas_ganadas, int partidas_perdidas, int puntos_anotados, int puntos_encajados) {
+		this.usuario = usuario;
+		this.clave = clave;
+		this.administrador = administrador;
+		this.partidas_jugadas = partidas_jugadas;
+		this.partidas_ganadas = partidas_ganadas;
+		this.partidas_perdidas = partidas_perdidas;
+		this.puntos_anotados = puntos_anotados;
+		this.puntos_encajados = puntos_encajados;
+		this.porcentaje_victorias = partidas_ganadas / partidas_jugadas;
+	}
+
+	
+	
 	public String getUsuario()
 	{
 		return usuario;

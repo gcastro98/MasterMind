@@ -13,7 +13,7 @@ public class Login
 		lista_usuarios = Usuario.getLista_usuarios();
 		while (i < lista_usuarios.size())
 		{
-			if ((lista_usuarios.get(i).getUsuario() == usuario) && (lista_usuarios.get(i).getClave() == clave))
+			if ((lista_usuarios.get(i).getUsuario().equals(usuario)) && (lista_usuarios.get(i).getClave().equals(clave)))
 				return (lista_usuarios.get(i));
 				i++;
 		}
