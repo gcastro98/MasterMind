@@ -174,4 +174,19 @@ public class Usuario {
                 + "\n, porcentaje_victorias=" + porcentaje_victorias
                 + '}';
     }
+	 public void actualizar_usuario()
+	 {
+		 double d;
+		 
+		 d  = 0;
+		 this.partidas_perdidas = this.partidas_jugadas - this.partidas_ganadas;
+		 System.out.println(this.usuario + " " + this.partidas_jugadas);
+		 if (partidas_jugadas != 0)
+		 {
+			 d = ((double)this.partidas_ganadas / (double)this.partidas_jugadas) * 100;
+		 System.out.println(this.usuario + " " + d);
+			 this.porcentaje_victorias = (int) d;
+		 }
+		 System.out.println(this.usuario + " " + d);
+	 }
 }

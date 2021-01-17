@@ -61,6 +61,8 @@ public class IU extends javax.swing.JFrame {
         boton_reiniciar_usuario.setVisible(false);
         this.jLabel_error_iniciar_sesion.setText("");
         this.jLabel_popup_error_iniciar_sesion.setText("");
+		this.jFrame_popup.setSize(new Dimension(460, 360));
+		this.jButton_menu_ajustes.setVisible(false);
 
         jPanel_list_usuario.setLayout(new BoxLayout(jPanel_list_usuario, BoxLayout.Y_AXIS));
         jScroll_list_usuario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -71,6 +73,10 @@ public class IU extends javax.swing.JFrame {
         jScroll_list_contrincante.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         contenido_intento_contrincante.setText("0");
         //contenido_puntuacion_usuario.setText("0");
+		this.jPanel_clasificacion.setLayout(new BoxLayout(jPanel_clasificacion, BoxLayout.Y_AXIS));
+        this.jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
 
     }
 
@@ -142,14 +148,15 @@ public class IU extends javax.swing.JFrame {
             }
         } else {
             if (contrincante == null) {
-                Usuario usuario = Login.sign_in(this.jTextField_nombre_usuario.getText(), this.jTextField_contrasena.getText());
-                if (usuario == null) {
+                Usuario adversario = Login.sign_in(this.jTextField_popup_nombre_usuario.getText(), this.jTextField_popup_contrasena.getText());
+                if (adversario == null) {
                     jLabel_popup_error_iniciar_sesion.setText("Usuario o contraseña incorrectos");
                 } else {
-                    if (usuario.equals(usuario_actual)) {
+                    if (adversario.equals(usuario_actual)) {
                         jLabel_popup_error_iniciar_sesion.setText("Se necesitan dos usuarios diferentes");
                     } else {
-                        contrincante = usuario;
+                        contrincante = adversario;
+                        jLabel_popup_user.setText(usuario_actual.getUsuario());
                         label_nombre_contrincante.setText(contrincante.getUsuario());
                         jFrame_popup.setVisible(true);
                         jPanel_login_contrincante.setVisible(false);
@@ -157,7 +164,6 @@ public class IU extends javax.swing.JFrame {
                         jPanel_popup_key.setVisible(true);
                     }
                 }
-
             }
         }
     }
@@ -215,7 +221,8 @@ public class IU extends javax.swing.JFrame {
         clave_contrincante = null;
         entrenamiento = false;
         jFrame_popup.setVisible(true);
-
+        this.jPanel_login_contrincante.setVisible(true);
+        this.jPanel_popup_key.setVisible(false);
     }
 
     public void crear_partida() {
@@ -286,7 +293,6 @@ public class IU extends javax.swing.JFrame {
     }
 
     public Combinacion leer_clave() {
-
         Colour[] intento = new Colour[4];
         intento[0] = Colour.valueOf((String) combo_popup_1.getSelectedItem());
         intento[1] = Colour.valueOf((String) combo_popup_2.getSelectedItem());
@@ -299,6 +305,7 @@ public class IU extends javax.swing.JFrame {
             jLabel_popup_user.setText(usuario_actual.getUsuario());
         } else if (clave_usuario_actual == null) {
             clave_usuario_actual = combi;
+            jLabel_popup_user.setText(contrincante.getUsuario());
             crear_partida();
         }
         return combi;
@@ -311,16 +318,21 @@ public class IU extends javax.swing.JFrame {
     public void clasificacion_por_victorias() {
         List<Usuario> lista_ordenada;
         int i;
-		JPanel us;
+		Component us;
 		
         lista_ordenada = Clasificacion.calificacion_por_victorias();
+		this.jPanel_clasificacion.removeAll();
+		System.out.println(lista_ordenada.size() + "<-----------");
+		System.out.println(Usuario.getLista_usuarios().size() + "<>>-----------");
 		//System.out.println(lista_ordenada.toString());
         i = 0;
-		this.jPanel_clasificacion.setLayout(new BorderLayout());
         while (i < lista_ordenada.size()) {
+			System.out.println(i);
             us = crear_panel_clasificacion(lista_ordenada.get(i));
-			System.out.println("a" + i);
-			this.jPanel_clasificacion.add(us);
+			this.jPanel_clasificacion.add(us,jPanel_clasificacion.getComponentCount());
+            LayoutManager f = this.jPanel_clasificacion.getLayout();
+            f.addLayoutComponent("us", us);
+			jPanel_clasificacion.setLayout(f);
             i++;
         }
     }
@@ -658,7 +670,7 @@ public class IU extends javax.swing.JFrame {
         jButton_ajustes_guardar1 = new javax.swing.JButton();
         jLabel_ajustes = new javax.swing.JLabel();
         jLabel_contenido = new javax.swing.JLabel();
-        jFrame_popup1 = new javax.swing.JFrame();
+        jFrame_head_to_head = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -677,17 +689,11 @@ public class IU extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jPanel_rondas_usuario = new javax.swing.JPanel();
         label_ronda_usuario = new javax.swing.JLabel();
@@ -1297,7 +1303,7 @@ public class IU extends javax.swing.JFrame {
             .addComponent(jPanel_turn, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
         );
 
-        jFrame_popup1.setTitle("Iniciar sesión");
+        jFrame_head_to_head.setTitle("Cara a cara");
 
         jPanel1.setBackground(new java.awt.Color(60, 63, 64));
         jPanel1.setMaximumSize(new java.awt.Dimension(357, 280));
@@ -1417,23 +1423,6 @@ public class IU extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jFrame_popup.setLocationRelativeTo(null);
-
-        javax.swing.GroupLayout jFrame_popup1Layout = new javax.swing.GroupLayout(jFrame_popup1.getContentPane());
-        jFrame_popup1.getContentPane().setLayout(jFrame_popup1Layout);
-        jFrame_popup1Layout.setHorizontalGroup(
-            jFrame_popup1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jFrame_popup1Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
-        jFrame_popup1Layout.setVerticalGroup(
-            jFrame_popup1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jFrame_popup1Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
         jPanel2.setBackground(new java.awt.Color(60, 63, 64));
         jPanel2.setMaximumSize(new java.awt.Dimension(357, 280));
         jPanel2.setMinimumSize(new java.awt.Dimension(357, 280));
@@ -1445,38 +1434,20 @@ public class IU extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
         jLabel17.setText("administrador");
 
-        jLabel18.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel18.setText("Partidas jugadas");
-
         jLabel19.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel19.setText("18");
-
-        jLabel20.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel20.setText("Partidas ganadas");
 
         jLabel21.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel21.setText("10");
 
-        jLabel22.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel22.setText("Partidas perdidas");
-
         jLabel23.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel23.setText("8");
-
-        jLabel24.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel24.setText("Porcentaje de victorias");
 
         jLabel25.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel25.setText("55,5 %");
 
-        jLabel26.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel26.setText("Puntos anotados");
-
         jLabel27.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel27.setText("100");
-
-        jLabel28.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel28.setText("Puntos encajados");
 
         jLabel29.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel29.setText("50");
@@ -1490,30 +1461,18 @@ public class IU extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel23)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, 0))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel25)
                             .addComponent(jLabel27)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel29)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel28))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel16)
-                                        .addComponent(jLabel17)
-                                        .addComponent(jLabel19)
-                                        .addComponent(jLabel21))
-                                    .addGap(57, 57, 57)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel20)
-                                        .addComponent(jLabel18)
-                                        .addComponent(jLabel22)
-                                        .addComponent(jLabel24)
-                                        .addComponent(jLabel26)))))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17))
+                        .addGap(0, 0, 0)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1523,30 +1482,36 @@ public class IU extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel18))
+                .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel20))
+                .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel23)
-                    .addComponent(jLabel22))
+                .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel24))
+                .addComponent(jLabel25)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(jLabel26))
+                .addComponent(jLabel27)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(jLabel28))
+                .addComponent(jLabel29)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jFrame_popup.setLocationRelativeTo(null);
+
+        javax.swing.GroupLayout jFrame_head_to_headLayout = new javax.swing.GroupLayout(jFrame_head_to_head.getContentPane());
+        jFrame_head_to_head.getContentPane().setLayout(jFrame_head_to_headLayout);
+        jFrame_head_to_headLayout.setHorizontalGroup(
+            jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame_head_to_headLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+        jFrame_head_to_headLayout.setVerticalGroup(
+            jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1733,8 +1698,8 @@ public class IU extends javax.swing.JFrame {
             .addGroup(jPanel_menu_lateralLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(jPanel_menu_lateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_menu_entrenamiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                    .addComponent(jbutton_newgame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_menu_entrenamiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbutton_newgame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                     .addComponent(jButton_menu_clasificacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_menu_ajustes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
@@ -1805,23 +1770,24 @@ public class IU extends javax.swing.JFrame {
         label_bienvenido.setText("Bienvenido,");
 
         jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(800, 800));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 800));
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(416, 600));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(416, 600));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(416, 600));
 
-        jPanel_clasificacion.setBackground(new java.awt.Color(255, 0, 0));
+        jPanel_clasificacion.setBackground(new java.awt.Color(243, 230, 0));
         jPanel_clasificacion.setMaximumSize(new java.awt.Dimension(500, 32767));
-        jPanel_clasificacion.setMinimumSize(new java.awt.Dimension(500, 600));
-        jPanel_clasificacion.setPreferredSize(new java.awt.Dimension(500, 600));
+        jPanel_clasificacion.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanel_clasificacion.setPreferredSize(new java.awt.Dimension(400, 400));
 
         javax.swing.GroupLayout jPanel_clasificacionLayout = new javax.swing.GroupLayout(jPanel_clasificacion);
         jPanel_clasificacion.setLayout(jPanel_clasificacionLayout);
         jPanel_clasificacionLayout.setHorizontalGroup(
             jPanel_clasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel_clasificacionLayout.setVerticalGroup(
             jPanel_clasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel_clasificacion);
@@ -1841,8 +1807,8 @@ public class IU extends javax.swing.JFrame {
                         .addGap(351, 351, 351)
                         .addComponent(label_bienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel_menu_inicioLayout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(319, 319, 319)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_menu_inicioLayout.setVerticalGroup(
@@ -1854,7 +1820,7 @@ public class IU extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label_bienvenido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2176,7 +2142,7 @@ public class IU extends javax.swing.JFrame {
         panel_intentos_contrincanteLayout.setVerticalGroup(
             panel_intentos_contrincanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_intentos_contrincanteLayout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(label_intento_contrincante)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(contenido_intento_contrincante)
@@ -2197,7 +2163,7 @@ public class IU extends javax.swing.JFrame {
         );
         jPanel_list_contrincanteLayout.setVerticalGroup(
             jPanel_list_contrincanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jScroll_list_contrincante.setViewportView(jPanel_list_contrincante);
@@ -2224,13 +2190,13 @@ public class IU extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_partida_contrincanteLayout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(boton_volver_contrincante, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
                 .addGroup(jPanel_partida_contrincanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panel_intento_contrincante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScroll_list_contrincante))
                 .addGap(112, 112, 112)
                 .addGroup(jPanel_partida_contrincanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(boton_intento_comprobar_contrincante, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(boton_intento_comprobar_contrincante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panel_intentos_contrincante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(122, 122, 122))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_partida_contrincanteLayout.createSequentialGroup()
@@ -2429,7 +2395,7 @@ public class IU extends javax.swing.JFrame {
         panel_intentos_usuarioLayout.setVerticalGroup(
             panel_intentos_usuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_intentos_usuarioLayout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(label_intento_usuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(contenido_intento_usuario)
@@ -2450,7 +2416,7 @@ public class IU extends javax.swing.JFrame {
         );
         jPanel_list_usuarioLayout.setVerticalGroup(
             jPanel_list_usuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jScroll_list_usuario.setViewportView(jPanel_list_usuario);
@@ -2608,8 +2574,7 @@ public class IU extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_menu_clasificacionActionPerformed
 
     private void jbutton_newgameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutton_newgameActionPerformed
-        this.jFrame_popup.setSize(new Dimension(460, 360));
-        this.jFrame_popup.setVisible(true);
+        boton_newGame();
     }//GEN-LAST:event_jbutton_newgameActionPerformed
 
     private void jButton_menu_entrenamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_menu_entrenamientoActionPerformed
@@ -2665,7 +2630,7 @@ public class IU extends javax.swing.JFrame {
 
     private void boton_intento_comprobar_contrincante_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_intento_comprobar_contrincante_usuarioActionPerformed
         correcto = intento(clave_contrincante, combinacion_contrincante(), contrincante);
-        if (((Integer.parseInt(this.contenido_intento_contrincante.getText()) % 3 == 0) && (!entrenamiento))&&!correcto) {
+        if (((Integer.parseInt(this.contenido_intento_contrincante.getText()) < intentos) && (!entrenamiento))&&!correcto) {
             this.jPanel_partida_contrincante.setVisible(false);
             this.jPanel_partida_usuario.setVisible(true);
             this.panel_puntuaciones_usuario.setVisible(true);
@@ -2702,7 +2667,7 @@ public class IU extends javax.swing.JFrame {
 
     private void boton_intento_comprobar_usuario_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_intento_comprobar_usuario_usuarioActionPerformed
         correcto = intento(clave_usuario_actual, combinacion_usuario(), usuario_actual);
-        if ((Integer.parseInt(this.contenido_intento_usuario.getText()) % 3 == 0) && (!entrenamiento) && !correcto) {
+        if ((Integer.parseInt(this.contenido_intento_usuario.getText()) < intentos) && (!entrenamiento) && !correcto) {
             this.jPanel_partida_contrincante.setVisible(true);
             this.jPanel_partida_usuario.setVisible(false);
             this.panel_puntuaciones_usuario.setVisible(true);
@@ -2718,6 +2683,7 @@ public class IU extends javax.swing.JFrame {
             this.jLabel_ajustes.setText("¡CORRECTO!");
             this.jLabel_contenido.setText(usuario_actual.getUsuario());
             this.jFrame_partida.setVisible(true);
+            entrenamiento();
         }
     }//GEN-LAST:event_boton_intento_comprobar_usuario_usuarioActionPerformed
 
@@ -2849,9 +2815,9 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JButton jButton_popup_savekey;
     private javax.swing.JButton jButton_registro;
     private javax.swing.JFrame jFrame_ajustes;
+    private javax.swing.JFrame jFrame_head_to_head;
     private javax.swing.JFrame jFrame_partida;
     private javax.swing.JFrame jFrame_popup;
-    private javax.swing.JFrame jFrame_popup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2861,18 +2827,12 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

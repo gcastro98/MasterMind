@@ -11,6 +11,6 @@ public class WinsSorter implements Comparator<Usuario> {
 
         u1 = usuario1.getPartidas_ganadas();
         u2 = usuario2.getPartidas_ganadas();
-        return u1.compareTo(u2);
+        return u2.compareTo(u1);
     }
 }
