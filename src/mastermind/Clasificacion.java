@@ -40,12 +40,15 @@ public class Clasificacion {
     }
 
     public static List<Usuario> calificacion_por_victorias() {
+		//System.out.println(Usuario.getLista_usuarios().toString());
         List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size() - 1);
         lista_ordenada.sort(new WinsSorter());
+		//System.out.println(lista_ordenada.toString());
         return (lista_ordenada);
     }
 
     public static List<Usuario> calificacion_por_porcentaje() {
+		//System.out.println(Usuario.getLista_usuarios().toString());
         List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size() - 1);
         lista_ordenada.sort(new PercentageSorter());
         return (lista_ordenada);

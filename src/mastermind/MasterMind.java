@@ -26,7 +26,12 @@ public class MasterMind {
 		}*/
         Partida.setLista_partidas(new ArrayList<Partida>());
         Usuario.setLista_usuarios(new ArrayList<Usuario>());
-        Usuario.addUsuario(new Usuario("admin", "admin", true));
+        Usuario.addUsuario(new Usuario("admin", "admin", false));
+            Usuario.addUsuario(new Usuario("admin2", "admin", true));
+            Usuario.addUsuario(new Usuario("admin3", "admin", true));
+            Usuario.addUsuario(new Usuario("admin4", "admin", true));
+        //prueba pr = new prueba();
+		//pr.setVisible(true);
         IU iu = new IU();
         iu.setVisible(true);
     }
@@ -96,6 +101,9 @@ public class MasterMind {
     private static void crear_datos_prueba() {
         if (Usuario.getLista_usuarios() == null) {
             Usuario.addUsuario(new Usuario("admin", "admin", true));
+            Usuario.addUsuario(new Usuario("admin2", "admin", true));
+            Usuario.addUsuario(new Usuario("admin3", "admin", true));
+            Usuario.addUsuario(new Usuario("admin4", "admin", true));
         }
         if (Partida.getLista_partidas() == null) {
 
