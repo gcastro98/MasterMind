@@ -1,18 +1,16 @@
 Implementar:
-	Fin de partida
-	Estadisticas al final de partida
 	Estadisticas:
 		Clasificaciones
 		Lista de partidas de usuario
 			Detalle de partida
 		Cara a cara
 	IO (cargar/descargar datos)
-
-Arreglar:
-	No guarda partidas
+Hecho
 	Iniciar Sesion (2 Usuarios diferentes)
 		Desaparece panel iniciar sesion 2º jugador
 	Registro
 	jlabel_login_error/jlabel_popup_login_error
 	Solo admin puede cambiar ajustes
-	
+	Fin de partida
+	Estadisticas al final de partida
+	No guarda partidas
