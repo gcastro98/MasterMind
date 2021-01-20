@@ -11,6 +11,6 @@ public class PercentageSorter implements Comparator<Usuario> {
 
         u1 = usuario1.getPorcentaje_victorias();
         u2 = usuario2.getPorcentaje_victorias();
-        return u1.compareTo(u2);
+        return u2.compareTo(u1);
     }
 }

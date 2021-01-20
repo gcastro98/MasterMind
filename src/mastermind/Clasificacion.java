@@ -49,7 +49,7 @@ public class Clasificacion {
 
     public static List<Usuario> calificacion_por_porcentaje() {
 		//System.out.println(Usuario.getLista_usuarios().toString());
-        List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size() - 1);
+        List<Usuario> lista_ordenada = Usuario.getLista_usuarios().subList(0, Usuario.getLista_usuarios().size());
         lista_ordenada.sort(new PercentageSorter());
         return (lista_ordenada);
     }

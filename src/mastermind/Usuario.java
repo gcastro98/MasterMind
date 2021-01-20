@@ -189,4 +189,19 @@ public class Usuario {
 		 }
 		 System.out.println(this.usuario + " " + d);
 	 }
+	 
+	public static Usuario getUsuarioByUsuario(String usuario)
+	{
+		int	i;
+		ArrayList<Usuario> lista = Usuario.getLista_usuarios();
+		
+		i = 0;
+		while (i < Usuario.getLista_usuarios().size())
+		{
+			if (lista.get(i).getUsuario().equals(usuario))
+				return (Usuario.getLista_usuarios().get(i));
+			i++;
+		}
+		return (null);
+	}
 }
