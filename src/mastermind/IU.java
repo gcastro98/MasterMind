@@ -346,6 +346,9 @@ public class IU extends javax.swing.JFrame {
 			jPanel_clasificacion.setLayout(f);
             i++;
         }
+		jPanel_clasificacion.setPreferredSize(new Dimension(400, 72 * Usuario.getLista_usuarios().size()));
+		jPanel_clasificacion.revalidate();
+		jPanel_clasificacion.repaint();
     }
 	
 	public void clasificacion_por_porcentaje() {
@@ -366,6 +369,9 @@ public class IU extends javax.swing.JFrame {
 			jPanel_clasificacion.setLayout(f);
             i++;
         }
+		jPanel_clasificacion.setPreferredSize(new Dimension(400, 72 * Usuario.getLista_usuarios().size()));
+		jPanel_clasificacion.revalidate();
+		jPanel_clasificacion.repaint();
     }
 
     public javax.swing.JPanel crear_panel_clasificacion(Usuario u) {
@@ -1889,25 +1895,24 @@ public class IU extends javax.swing.JFrame {
         label_bienvenido.setText("Bienvenido,");
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setMaximumSize(new java.awt.Dimension(416, 600));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(416, 600));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(416, 600));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jPanel_clasificacion.setBackground(new java.awt.Color(243, 230, 0));
         jPanel_clasificacion.setMinimumSize(new java.awt.Dimension(0, 0));
-        jPanel_clasificacion.setPreferredSize(new java.awt.Dimension(400, 400));
+        jPanel_clasificacion.setPreferredSize(new java.awt.Dimension(416, 2000));
 
         javax.swing.GroupLayout jPanel_clasificacionLayout = new javax.swing.GroupLayout(jPanel_clasificacion);
         jPanel_clasificacion.setLayout(jPanel_clasificacionLayout);
         jPanel_clasificacionLayout.setHorizontalGroup(
             jPanel_clasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 416, Short.MAX_VALUE)
         );
         jPanel_clasificacionLayout.setVerticalGroup(
             jPanel_clasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 2000, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel_clasificacion);
@@ -1938,15 +1943,15 @@ public class IU extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(156, 156, 156)
                 .addComponent(label_juego, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 178, Short.MAX_VALUE))
+                .addGap(0, 463, Short.MAX_VALUE))
             .addGroup(jPanel_menu_inicioLayout.createSequentialGroup()
                 .addGap(319, 319, 319)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_menu_inicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(307, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_menu_inicioLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(label_bienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1966,8 +1971,8 @@ public class IU extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel_menuLayout = new javax.swing.GroupLayout(jPanel_menu);
@@ -1983,11 +1988,11 @@ public class IU extends javax.swing.JFrame {
         );
         jPanel_menuLayout.setVerticalGroup(
             jPanel_menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel_menu_lateral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel_menu_lateral, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
             .addGroup(jPanel_menuLayout.createSequentialGroup()
                 .addComponent(jPanel_border_lateral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPanel_menu_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 4, Short.MAX_VALUE))
+            .addComponent(jPanel_menu_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
         );
 
         jPanel_iniciar_sesion.setBackground(new java.awt.Color(243, 230, 0));
@@ -2697,7 +2702,7 @@ public class IU extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField_nombre_usuarioActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println(Partida.getLista_partidas().toString());
+        //System.out.println(Partida.getLista_partidas().toString());
 		if (this.jPanel_menu_lateral.isVisible()) {
             this.jPanel_menu_lateral.setVisible(false);
             this.jPanel_border_lateral.setVisible(false);
@@ -3274,7 +3279,7 @@ public class IU extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-		pack();
+		System.out.println(jPanel_partida.toString());
 		return (jPanel_partida);
 	}
 

@@ -19,8 +19,9 @@ public class MasterMind {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-		guardar_datos();
+		//guardar_datos();
 		cargar_datos();
+		//Partida.setLista_partidas(new ArrayList<Partida>());
 		System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/YY")));
 		/*Usuario.setLista_usuarios(new ArrayList<Usuario>());
 		Usuario u;

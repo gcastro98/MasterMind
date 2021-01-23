@@ -76,7 +76,7 @@ public class Combinacion implements Serializable{
         return combinacion.getCodigo()[0] == this.codigo[0] & combinacion.getCodigo()[1] == this.codigo[1] & combinacion.getCodigo()[2] == this.codigo[2] & combinacion.getCodigo()[3] == this.codigo[3];
     }
 
-	public static int[] comprobacion(Colour[] clave, Colour[] codigo)
+	public static int[] comprobacion(Colour[] clave, Colour[] codigo) // int[0] contenidos e int[1] posicionados;
 	{
 		int resultado[];
 		int frecuencias_clave[];
