@@ -10,6 +10,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
@@ -48,6 +53,15 @@ public class IU extends javax.swing.JFrame {
     }
 
     public void inicio() {
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				try {
+					MasterMind.guardar_datos();
+				} catch (IOException ex) {
+					Logger.getLogger(IU.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		});
         this.setLocationRelativeTo(null); 
         usuario_actual = null;
         contrincante = null;
@@ -210,7 +224,7 @@ public class IU extends javax.swing.JFrame {
         this.panel_puntuaciones_usuario.setVisible(false);
         entrenamiento = true;
         boton_reiniciar_usuario.setVisible(false);
-        jFrame_partida.setVisible(true);
+        jFrame_partida.setVisible(false);
     }
 
     public void boton_newGame() {
@@ -703,10 +717,10 @@ public class IU extends javax.swing.JFrame {
         jLabel_jugadas_usuario = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel_puntos_contra_usuario = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel_administrador_usuario = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jPanel_head_rival = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
+        jLabel_administrador_rival = new javax.swing.JLabel();
         jLabel_jugadas_rival = new javax.swing.JLabel();
         jLabel_ganadas_rival = new javax.swing.JLabel();
         jLabel_perdidas_rival = new javax.swing.JLabel();
@@ -715,6 +729,8 @@ public class IU extends javax.swing.JFrame {
         jLabel_puntos_contra_rival = new javax.swing.JLabel();
         jTextField_rival_estadisticas = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel_partidas = new javax.swing.JPanel();
         jPanel_rondas_usuario = new javax.swing.JPanel();
         label_ronda_usuario = new javax.swing.JLabel();
         contenido_ronda_usuario = new javax.swing.JLabel();
@@ -1385,8 +1401,8 @@ public class IU extends javax.swing.JFrame {
         jLabel_puntos_contra_usuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel_puntos_contra_usuario.setText("50");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
-        jLabel2.setText("administrador");
+        jLabel_administrador_usuario.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
+        jLabel_administrador_usuario.setText("administrador");
 
         jButton6.setBackground(new java.awt.Color(60, 63, 64));
         jButton6.setForeground(new java.awt.Color(155, 246, 254));
@@ -1434,7 +1450,7 @@ public class IU extends javax.swing.JFrame {
                                 .addComponent(jTextField_usuario_estadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton4))
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel_administrador_usuario))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton6)))
                 .addContainerGap(10, Short.MAX_VALUE))
@@ -1445,11 +1461,10 @@ public class IU extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel_head_usuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel_head_usuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jTextField_usuario_estadisticas)))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jTextField_usuario_estadisticas))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(jLabel_administrador_usuario)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel_head_usuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -1482,8 +1497,8 @@ public class IU extends javax.swing.JFrame {
         jPanel_head_rival.setMinimumSize(new java.awt.Dimension(357, 280));
         jPanel_head_rival.setPreferredSize(new java.awt.Dimension(357, 280));
 
-        jLabel17.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
-        jLabel17.setText("administrador");
+        jLabel_administrador_rival.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
+        jLabel_administrador_rival.setText("administrador");
 
         jLabel_jugadas_rival.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel_jugadas_rival.setText("18");
@@ -1528,7 +1543,7 @@ public class IU extends javax.swing.JFrame {
                     .addComponent(jLabel_puntos_contra_rival)
                     .addComponent(jLabel_jugadas_rival)
                     .addComponent(jLabel_ganadas_rival)
-                    .addComponent(jLabel17)
+                    .addComponent(jLabel_administrador_rival)
                     .addGroup(jPanel_head_rivalLayout.createSequentialGroup()
                         .addComponent(jTextField_rival_estadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1543,7 +1558,7 @@ public class IU extends javax.swing.JFrame {
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jTextField_rival_estadisticas))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel17)
+                .addComponent(jLabel_administrador_rival)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel_jugadas_rival)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1559,6 +1574,21 @@ public class IU extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(431, 286));
+
+        javax.swing.GroupLayout jPanel_partidasLayout = new javax.swing.GroupLayout(jPanel_partidas);
+        jPanel_partidas.setLayout(jPanel_partidasLayout);
+        jPanel_partidasLayout.setHorizontalGroup(
+            jPanel_partidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 431, Short.MAX_VALUE)
+        );
+        jPanel_partidasLayout.setVerticalGroup(
+            jPanel_partidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 695, Short.MAX_VALUE)
+        );
+
+        jScrollPane2.setViewportView(jPanel_partidas);
+
         jFrame_popup.setLocationRelativeTo(null);
 
         javax.swing.GroupLayout jFrame_head_to_headLayout = new javax.swing.GroupLayout(jFrame_head_to_head.getContentPane());
@@ -1566,15 +1596,24 @@ public class IU extends javax.swing.JFrame {
         jFrame_head_to_headLayout.setHorizontalGroup(
             jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jFrame_head_to_headLayout.createSequentialGroup()
-                .addComponent(jPanel_head_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel_head_rival, javax.swing.GroupLayout.PREFERRED_SIZE, 268, Short.MAX_VALUE)
+                .addGroup(jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jFrame_head_to_headLayout.createSequentialGroup()
+                        .addComponent(jPanel_head_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel_head_rival, javax.swing.GroupLayout.PREFERRED_SIZE, 268, Short.MAX_VALUE))
+                    .addGroup(jFrame_head_to_headLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jFrame_head_to_headLayout.setVerticalGroup(
             jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel_head_rival, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-            .addComponent(jPanel_head_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jFrame_head_to_headLayout.createSequentialGroup()
+                .addGroup(jFrame_head_to_headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel_head_rival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                    .addComponent(jPanel_head_usuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -2857,7 +2896,8 @@ public class IU extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton_menu_estadisticas_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_menu_estadisticas_usuarioActionPerformed
-        jLabel_jugadas_usuario.setText(" ");
+        jTextField_usuario_estadisticas.setText("");
+		jLabel_jugadas_usuario.setText(" ");
 		jLabel_ganadas_usuario.setText(" ");
 		jLabel_perdidas_usuario.setText(" ");
 		jLabel_porcentaje_usuario.setText(" ");
@@ -2869,9 +2909,11 @@ public class IU extends javax.swing.JFrame {
 		jLabel_porcentaje_rival.setText(" ");
 		jLabel_puntos_favor_rival.setText(" ");
 		jLabel_puntos_contra_rival.setText(" ");
+		jLabel_administrador_usuario.setText(" ");
+		jLabel_administrador_rival.setText(" ");
 		jPanel_head_rival.setVisible(false);
 		jFrame_head_to_head.setVisible(true);
-		jFrame_head_to_head.setSize(jPanel_head_usuario.getWidth(), jPanel_head_usuario.getHeight());
+		jFrame_head_to_head.setSize(800,800);
 		jFrame_head_to_head.revalidate();
     }//GEN-LAST:event_jButton_menu_estadisticas_usuarioActionPerformed
 
@@ -2884,6 +2926,10 @@ public class IU extends javax.swing.JFrame {
 		jLabel_porcentaje_rival.setText(u.getPorcentaje_victorias() + " %");
 		jLabel_puntos_favor_rival.setText(u.getPuntos_anotados() + "");
 		jLabel_puntos_contra_rival.setText(u.getPuntos_encajados() + "");
+		if (u.isAdministrador())
+			jLabel_administrador_rival.setText("administrador");
+		else
+			jLabel_administrador_rival.setText(" ");
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField_usuario_estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_usuario_estadisticasActionPerformed
@@ -2899,8 +2945,13 @@ public class IU extends javax.swing.JFrame {
 		jLabel_porcentaje_usuario.setText(u.getPorcentaje_victorias() + " %");
 		jLabel_puntos_favor_usuario.setText(u.getPuntos_anotados() + "");
 		jLabel_puntos_contra_usuario.setText(u.getPuntos_encajados() + "");
-		jFrame_head_to_head.setSize(jPanel_head_usuario.getWidth(), jPanel_head_usuario.getHeight());
+		if (u.isAdministrador())
+			jLabel_administrador_usuario.setText("administrador");
+		else
+			jLabel_administrador_usuario.setText(" ");
+		jFrame_head_to_head.setSize(800,800);
 		jFrame_head_to_head.revalidate();
+		mostrar_lista_partidas(u);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -2997,12 +3048,12 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel_administrador_rival;
+    private javax.swing.JLabel jLabel_administrador_usuario;
     private javax.swing.JLabel jLabel_ajustes;
     private javax.swing.JLabel jLabel_ajustes_intentos;
     private javax.swing.JLabel jLabel_ajustes_rondas;
@@ -3045,6 +3096,7 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_menu_lateral;
     private javax.swing.JPanel jPanel_partida_contrincante;
     private javax.swing.JPanel jPanel_partida_usuario;
+    private javax.swing.JPanel jPanel_partidas;
     private javax.swing.JPanel jPanel_popup_color_1;
     private javax.swing.JPanel jPanel_popup_color_2;
     private javax.swing.JPanel jPanel_popup_color_3;
@@ -3055,6 +3107,7 @@ public class IU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_turn;
     private javax.swing.JPanel jPanel_turn_contenido;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScroll_list_contrincante;
     private javax.swing.JScrollPane jScroll_list_usuario;
     private javax.swing.JTextField jTextField_ajustes_intentos;
@@ -3094,5 +3147,170 @@ public class IU extends javax.swing.JFrame {
 	private void mostrar_info_usuario(String text) {
 		
 	}
+	
+	public javax.swing.JPanel crear_panel_partida(Partida partida)
+	{
+		JPanel jPanel_partida = new javax.swing.JPanel();
+        JLabel jLabel_lista_partidas_usuario = new javax.swing.JLabel();
+        JLabel jLabel_versus = new javax.swing.JLabel();
+        JLabel jLabel_lista_partidas_rival = new javax.swing.JLabel();
+        JLabel jLabel_numero_de_rondas = new javax.swing.JLabel();
+        JLabel jLabel_rondas = new javax.swing.JLabel();
+        JLabel jLabel_puntos_rival = new javax.swing.JLabel();
+        JLabel victoria_usuario = new javax.swing.JLabel();
+        JLabel jLabel_puntos_usuario = new javax.swing.JLabel();
+        JLabel jLabel_fecha = new javax.swing.JLabel();
+        JLabel victoria_rival = new javax.swing.JLabel();
 
+        jPanel_partida.setBackground(new java.awt.Color(243, 230, 0));
+        jPanel_partida.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel_partida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                partida_clicked(partida.getId_partida());
+            }
+        });
+
+        jLabel_lista_partidas_usuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_lista_partidas_usuario.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_lista_partidas_usuario.setText("Pepe");
+
+        jLabel_versus.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_versus.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_versus.setText("VS");
+
+        jLabel_lista_partidas_rival.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_lista_partidas_rival.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_lista_partidas_rival.setText("Juan");
+
+        jLabel_numero_de_rondas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_numero_de_rondas.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_numero_de_rondas.setText("Número de rondas:");
+
+        jLabel_rondas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_rondas.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_rondas.setText("3");
+
+        jLabel_puntos_rival.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_puntos_rival.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_puntos_rival.setText("10");
+
+        victoria_usuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icon/baseline_star_black_18dp.png"))); // NOI18N
+
+        jLabel_puntos_usuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_puntos_usuario.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_puntos_usuario.setText("18");
+
+        jLabel_fecha.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel_fecha.setForeground(new java.awt.Color(60, 63, 65));
+        jLabel_fecha.setText("20/01/21");
+
+        victoria_rival.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icon/baseline_star_black_18dp.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel_partidaLayout = new javax.swing.GroupLayout(jPanel_partida);
+        jPanel_partida.setLayout(jPanel_partidaLayout);
+        jPanel_partidaLayout.setHorizontalGroup(
+            jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                        .addComponent(victoria_usuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel_puntos_usuario)
+                            .addComponent(jLabel_lista_partidas_usuario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel_versus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                                .addComponent(jLabel_puntos_rival)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                                .addComponent(jLabel_lista_partidas_rival)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(victoria_rival)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                                .addComponent(jLabel_fecha))))
+                    .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                        .addComponent(jLabel_numero_de_rondas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_rondas)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel_partidaLayout.setVerticalGroup(
+            jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_partidaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(victoria_usuario)
+                    .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel_lista_partidas_usuario)
+                        .addComponent(jLabel_versus)
+                        .addComponent(jLabel_lista_partidas_rival))
+                    .addComponent(jLabel_fecha)
+                    .addComponent(victoria_rival))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_puntos_usuario)
+                    .addComponent(jLabel_puntos_rival))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_partidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_numero_de_rondas)
+                    .addComponent(jLabel_rondas))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+		pack();
+		return (jPanel_partida);
+	}
+
+	private void partida_clicked(int id_partida) {
+		Partida partida_solicitada;
+		
+		partida_solicitada = Partida.getPartidabyId_partida(id_partida);
+		System.out.println("-------------------------------------------");
+		
+	}
+
+	private void mostrar_lista_partidas(Usuario u) {
+		JPanel panel_partida;
+		ArrayList<Partida> lista_partidas;
+		LayoutManager f;
+		int i;
+		
+		if (!(jLabel_jugadas_rival.getText().equals("")))
+			lista_partidas = Partida.getPartidasbyUsuario(u);
+		else
+			lista_partidas = Partida.getPartidasbyUsuarioandRival(u, Usuario.getUsuarioByUsuario(jTextField_rival_estadisticas.getText()));
+		i = 0;
+		//lista_partidas = Partida.getLista_partidas();
+		System.out.println("$$$$$$$$$$$$" + Partida.getLista_partidas().toString());
+		while (i < lista_partidas.size())
+		{
+			System.out.println("%%%%%%%%%%%%%%%%");
+			panel_partida = crear_panel_partida(lista_partidas.get(i));
+			System.out.println(panel_partida.toString());
+			this.jPanel_partidas.add(panel_partida,jPanel_partidas.getComponentCount());
+            f = this.jPanel_ajustes.getLayout();
+            f.addLayoutComponent("panel_partida", panel_partida);
+			jPanel_ajustes.setLayout(f);
+			i++;
+		}
+		this.jPanel_partidas.revalidate();
+		this.jPanel_partidas.repaint();
+	}
 }

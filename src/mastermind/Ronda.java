@@ -5,11 +5,13 @@
  */
 package mastermind;
 
+import java.io.Serializable;
+
 /**
  *
  * @author sigui
  */
-public class Ronda {
+public class Ronda implements Serializable{
 
     private Usuario usuario1;
     private Usuario usuario2;
@@ -88,4 +90,10 @@ public class Ronda {
         }
 
     }
+
+	@Override
+	public String toString() {
+		return "Ronda{" + "usuario1=" + usuario1.toString() + ", usuario2=" + usuario2.toString() + ", puntuacion1=" + puntuacion1 + ", puntuacion2=" + puntuacion2 + ", clave1=" + clave1.toString() + ", clave2=" + clave2.toString() + '}';
+	}
+	
 }

@@ -1,15 +1,18 @@
 package mastermind;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
-public class Partida {
+public class Partida implements Serializable{
 
     private Usuario local;
     private Usuario visitante;
     private LocalDate fecha;
     private ArrayList<Ronda> rondas;
+	private final int id_partida;
     private static ArrayList<Partida> lista_partidas;
 
     public Partida(Usuario local, Usuario visitante) {
@@ -17,6 +20,7 @@ public class Partida {
         this.visitante = visitante;
         this.fecha = LocalDate.now();
         this.rondas = new ArrayList<>();
+		this.id_partida = lista_partidas.size();
     }
 
     public static Partida jugar(Usuario local, Usuario visitante) {
@@ -51,6 +55,10 @@ public class Partida {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
+
+	public int getId_partida() {
+		return id_partida;
+	}
 
     public ArrayList<Ronda> getRondas() {
         return rondas;
@@ -109,4 +117,48 @@ public class Partida {
                 + visitante.toString() + ", fecha=" + fecha.toString()
                 + ", rondas=" + rondas.toString() + '}';
     }
+
+	public static Partida getPartidabyId_partida(int id_partida) {
+		return (lista_partidas.get(id_partida));
+	}
+
+	static ArrayList<Partida> getPartidasbyUsuario(Usuario u) {
+		int i;
+		ArrayList<Partida> lista_partidas_usuario;
+
+		lista_partidas_usuario = (ArrayList<Partida>) getLista_partidas().clone();
+		i = lista_partidas_usuario.size() - 1;
+		while (i >= 0)
+		{
+			if (!((lista_partidas_usuario.get(i).getLocal().equals(u))
+					|| (lista_partidas_usuario.get(i).getVisitante().equals(u))))
+			{
+				lista_partidas_usuario.remove(i);
+			}
+			i--;
+		}
+		Collections.reverse(lista_partidas_usuario);
+		return (lista_partidas_usuario);
+	}
+
+	static ArrayList<Partida> getPartidasbyUsuarioandRival(Usuario u1, Usuario u2) {
+		int i;
+		ArrayList<Partida> lista_partidas_usuario_and_rival;
+
+		lista_partidas_usuario_and_rival = (ArrayList<Partida>) getLista_partidas().clone();
+		i = lista_partidas_usuario_and_rival.size() - 1;
+		while (i >= 0)
+		{
+			if (!(((lista_partidas_usuario_and_rival.get(i).getLocal().equals(u1)) 
+					&& (lista_partidas_usuario_and_rival.get(i).getVisitante().equals(u2))) 
+					|| ((lista_partidas_usuario_and_rival.get(i).getLocal().equals(u2)) 
+					&& (lista_partidas_usuario_and_rival.get(i).getVisitante().equals(u2)))))
+			{
+				lista_partidas_usuario_and_rival.remove(i);
+			}
+			i--;
+		}
+		Collections.reverse(lista_partidas_usuario_and_rival);
+		return (lista_partidas_usuario_and_rival);
+	}
 }

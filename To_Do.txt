@@ -1,10 +1,17 @@
 Implementar:
+	Numero maximo de intentos
 	Estadisticas:
-		Clasificaciones
 		Lista de partidas de usuario
 			Detalle de partida
 		Cara a cara
-	IO (cargar/descargar datos)
+Arreglar:
+	mensaje al entrar en entrenamiento
+	seleccionar intentos entrenamiento
+	Guardar datos de la partida en usuario
+	label_introducir_claves al reves
+	colores_contenidos
+	tamaño panel clasificacion no cambia
+	crear panel partida crea panel mal
 Hecho
 	Iniciar Sesion (2 Usuarios diferentes)
 		Desaparece panel iniciar sesion 2º jugador
@@ -14,3 +21,6 @@ Hecho
 	Fin de partida
 	Estadisticas al final de partida
 	No guarda partidas
+	Clasificaciones
+	IO (cargar/descargar datos)
+	label administrador
